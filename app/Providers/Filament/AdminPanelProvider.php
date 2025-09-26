@@ -19,6 +19,9 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\RecentAbsensi;
+use App\Filament\Widgets\AbsensiSudahWidget;
+use App\Filament\Widgets\AbsensiBelumWidget;
+use App\Filament\Widgets\AbsensiCard;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -84,6 +87,40 @@ class AdminPanelProvider extends PanelProvider
                     </style>
                 '
             )
+            ->renderHook(
+                'panels::head.end',
+                fn() => '
+        <style>
+            /* === Sidebar (punyamu) ... === */
+
+            /* Default semua opsi filter hitam */
+            .fi-modal select option,
+            .fi-dropdown-panel select option,
+            .fi-ta .fi-filter select option {
+                color: #000 !important;   /* nama user tetap hitam */
+            }
+
+            /* Khusus opsi "All" → paksa jadi putih */
+            .fi-modal select option[value=""],
+            .fi-dropdown-panel select option[value=""],
+            .fi-ta .fi-filter select option[value=""] {
+                color: #fff !important;   /* All putih */
+                background-color: #000 !important; /* biar kontras */
+                font-weight: 600;
+            }
+
+            /* Saat dark mode: tetap aman, opsi All putih di bg hitam */
+            [data-theme="dark"] .fi-modal select option[value=""],
+            [data-theme="dark"] .fi-dropdown-panel select option[value=""],
+            [data-theme="dark"] .fi-ta .fi-filter select option[value=""] {
+                color: #fff !important;
+                background-color: #000 !important;
+            }
+        </style>
+    '
+            )
+
+
 
             ->login()
             ->colors([
@@ -101,6 +138,9 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 StatsOverview::class,
                 RecentAbsensi::class,
+                AbsensiSudahWidget::class,
+                AbsensiBelumWidget::class,
+                AbsensiCard::class,
             ])
 
             /* === Middleware === */

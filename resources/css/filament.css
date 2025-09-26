@@ -1,0 +1,10 @@
+/* Ubah font dropdown filter SelectFilter */
+.fi-ta-filter [x-ref="input"] {
+    color: #000 !important;      /* warna font hitam */
+    background-color: #fff;      /* background putih */
+}
+
+/* Ubah font di opsi dropdown */
+.fi-ta-filter .ts-dropdown .ts-dropdown-content .option {
+    color: #000 !important;      /* teks hitam */
+}

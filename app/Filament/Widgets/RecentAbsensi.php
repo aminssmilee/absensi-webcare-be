@@ -8,14 +8,14 @@ use Filament\Tables;
 
 class RecentAbsensi extends BaseWidget
 {
-    protected static ?string $heading = 'Absensi Terbaru';
-    protected int | string | array $columnSpan = 'full'; // Biar full width
+    protected static ?string $heading = '📋 Absensi Terbaru';
+    protected int | string | array $columnSpan = 'full'; // lebar penuh
 
     public function table(Tables\Table $table): Tables\Table
     {
         return $table
             ->query(
-                Absensi::with('user')->latest()->take(5) // ambil 5 data terakhir
+                Absensi::with('user')->latest()->take(5)
             )
             ->paginated(false)
             ->columns([
