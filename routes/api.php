@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TaskController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // 📌 Absensi (hanya user yang login bisa akses)
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/absensi', [AbsensiController::class, 'store']);        
     Route::get('/absensi/history', [AbsensiController::class, 'history']); 
@@ -32,5 +32,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/absensi/izin', [AbsensiController::class, 'store']);
     Route::post('/profile/upload-photo', [ProfileController::class, 'uploadPhoto']);
     Route::delete('/profile/remove-photo', [ProfileController::class, 'removePhoto']);
-});
 
+    // 📌 Task (baru)
+    Route::get('/tasks', [TaskController::class, 'index']);         // ambil semua tugas user
+    Route::put('/tasks/{task}', [TaskController::class, 'update']); // update status/komentar tugas
+});

@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Rawilk\FilamentPasswordInput\Password;
 
 class UserResource extends Resource
 {
@@ -25,10 +26,12 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
                 Forms\Components\TextInput::make('email')->email()->unique()->required(),
-                Forms\Components\TextInput::make('password')
-                    ->password()
+                Password::make('password')
+                    ->label('Password')
                     ->required()
-                    ->dehydrateStateUsing(fn($state) => bcrypt($state)), // hash password
+                    ->dehydrateStateUsing(fn($state) => filled($state) ? bcrypt($state) : null)
+                    ->dehydrated(fn($state) => filled($state)),
+                // hash password
                 Forms\Components\Select::make('role')
                     ->options([
                         'admin' => 'Admin',
@@ -41,7 +44,7 @@ class UserResource extends Resource
 
     public static function table(Table $table): Table
     {
-         return $table
+        return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('name'),
